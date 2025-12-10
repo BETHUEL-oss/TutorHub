@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container mx-auto p-4 bg-[#000000] min-h-screen">
+    <h1 class="text-3xl font-bold mb-6 text-yellow-500">Contact {{ settings.site_name|default:"Us" }}</h1>
+
+    {% if contact_info %}
+    <div class="bg-[#0A0A0A] shadow-md shadow-black/50 rounded-lg p-6 border border-[#1F1F1F]">
+        <h2 class="text-2xl font-semibold mb-4 text-yellow-500">Official Contact Details</h2>
+
+        <p class="mb-2 text-gray-300">
+            <strong class="text-white">Email:</strong>
+            <a href="mailto:{{ contact_info.email }}" class="text-[#FBBF24] hover:text-[#F59E0B] transition-colors">
+                {{ contact_info.email }}
+            </a>
+        </p>
+        <p class="mb-2 text-gray-300">
+            <strong class="text-white">Phone:</strong> {{ contact_info.phone }}
+        </p>
+        <p class="mb-2 text-gray-300">
+            <strong class="text-white">Support Hours:</strong> {{ contact_info.support_hours }}
+        </p>
+    </div>
+    {% else %}
+    <p class="text-red-400">Contact information is currently unavailable. Please check back later.</p>
+    {% endif %}
+
+</div>
+{% endblock content %}

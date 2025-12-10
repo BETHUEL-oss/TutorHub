@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content%}
+<div class="container mx-auto px-4 py-12">
+
+    <div class="bg-gray-900 rounded-xl shadow-2xl shadow-black/70 p-6 md:p-10 lg:p-12 border-t-8 border-yellow-500">
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+
+            <div class="lg:sticky lg:top-10">
+                {% with primary_image=courses.get_primary_images %}
+                    <img src="{% if primary_image %}{{ primary_image.image.url }}{% else %}{{ courses.image.url }}{% endif %}"
+                         alt="{{ courses.name }}"
+                         class="w-full h-auto rounded-lg shadow-xl object-cover border-4 border-yellow-400/50" />
+                {% endwith %}
+
+                <div class="mt-6 flex space-x-4 overflow-x-auto">
+                    {% for img in courses.images.all %}
+                    <img src="{{ img.image.url }}"
+                         alt="Course Gallery Image"
+                         class="w-24 h-24 object-cover rounded-md cursor-pointer border-2 border-gray-700 hover:border-yellow-500 transition-colors duration-300">
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div>
+                <h1 class="text-6xl font-black text-yellow-400 mb-3 tracking-tight">{{ courses.name }}</h1>
+
+                <p class="text-xl font-medium text-gray-300 mb-4">
+                    Taught by:
+                    <a href="#" class="text-yellow-500 hover:text-yellow-300 transition-colors duration-200 font-semibold">{{ courses.tutor }}</a>
+                </p>
+
+                <div class="flex items-baseline mb-8 border-b border-gray-700 pb-4">
+                    <span class="text-6xl font-extrabold text-white">Ksh{{ courses.price|floatformat:2 }}</span>
+                    <span class="text-xl text-gray-400 ml-3">per {{ courses.subjects }}</span>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-3xl font-bold text-yellow-400 mb-4 border-l-4 border-yellow-500 pl-3">Course Description</h3>
+                    <p class="text-gray-300 leading-relaxed text-lg">{{ courses.description|linebreaks }}</p>
+                </div>
+
+                <div class="mb-8 p-5 bg-yellow-900/20 rounded-lg border border-yellow-700 shadow-inner">
+                    <p class="text-xl font-bold text-yellow-200">
+                        Enrollment Slots: <strong class="text-yellow-400">{{ courses.available }} {{ courses.subjects }}</strong>
+                    </p>
+                    {% if courses.available <= 5 %}
+                    <p class="text-sm text-red-400 mt-2 font-medium">🚨 Hurry! Low enrollment slots remaining for this course.</p>
+                    {% endif %}
+                </div>
+
+                <form>
+                <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
+
+                    <input type="number"
+                           value="1"
+                           min="1"
+                           max="{{ product.stock_quantity }}"
+                           class="w-full sm:w-32 border border-gray-700 rounded-xl p-4 text-xl bg-gray-800 text-yellow-400 font-bold focus:ring-yellow-500 focus:border-yellow-500 transition-all"
+                           id="quantity-input"
+                           name="quantity">
+
+                    <button
+                        hx-post="{% url 'add_to_cart' product_id=product.id %}"
+                        hx-target="#cart-count"
+                        hx-swap="innerHTML"
+                        hx-trigger="click"
+                        {% if not courses.available %}disabled{% endif %}
+                        class="flex-1 w-full bg-yellow-500 text-gray-900 px-8 py-4 rounded-xl text-2xl font-black uppercase tracking-wider hover:bg-yellow-600 transition duration-300 shadow-xl shadow-yellow-500/50 disabled:bg-gray-700 disabled:shadow-none disabled:text-gray-400">
+
+                        {% if courses.available < 1 %}
+                            Enrollment Closed
+                        {% else %}
+                            Enroll Now
+                        {% endif %}
+                    </button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

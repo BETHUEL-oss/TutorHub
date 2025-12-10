@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}{{ tutor.name }} Profile{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-10 text-white">
+
+    <div class="bg-[#0A0A0A] rounded-xl shadow-2xl shadow-black/50 p-8 border border-[#1F1F1F]">
+        <h1 class="text-4xl font-extrabold text-yellow-500 mb-4">{{ tutor.tutor_name }}</h1>
+        <p class="text-xl text-gray-400 mb-6">Located in: {{ tutor.location }}</p>
+
+        <div class="mb-10">
+            <h2 class="text-2xl font-bold text-yellow-500 border-b border-[#1F1F1F] pb-2 mb-3">About Us</h2>
+            <p class="text-gray-300 leading-relaxed">{{ tutor.bio|linebreaks }}</p>
+            <p class="text-sm text-gray-500 mt-4">Joined TutorHub on {{ tutor.joined_date|date:"F j, Y" }}</p>
+        </div>
+
+        <h2 class="text-3xl font-extrabold text-yellow-500 border-b border-[#1F1F1F] pb-3 mb-6">Current courses offered ({{ courses|length }})</h2>
+
+        {% if products %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {% for course in courses %}
+
+            <div class="bg-[#1A1A1A] rounded-xl shadow-md hover:shadow-lg hover:shadow-orange-500/10 transition-shadow duration-300 overflow-hidden border border-[#1F1F1F]">
+
+                {% with primary_image=courses.get_primary_image %}
+                    <a href="{% url 'courses_detail' slug=course.slug %}">
+
+                        {% if primary_image %}
+                            <img src="{{ primary_image.image.url }}"
+                                 alt="{{ courses.name }}"
+                                 class="w-full h-40 object-cover">
+                        {% else %}
+                            <div class="w-full h-40 bg-gray-900 flex items-center justify-center text-gray-500 border-b border-[#1F1F1F]">
+                                No Image
+                            </div>
+                        {% endif %}
+
+                    </a>
+                {% endwith %}
+
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-1 truncate text-white">
+                        <a href="{% url 'courses_detail' slug=course.slug %}" class="text-[#FBBF24] hover:text-[#F59E0B] transition-colors">{{ courses.name }}</a>
+                    </h3>
+                    <p class="text-white font-bold text-xl">Ksh{{ courses.price }} / {{ courses.unit }}</p>
+
+                    <a href="{% url 'courses_detail' slug=course.slug %}" class="mt-3 inline-block text-sm text-[#FBBF24] hover:text-[#F59E0B] hover:underline transition-colors">
+                        View Details
+                    </a>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-400">This tutor is not available to tutor at the moment.</p>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock content %}

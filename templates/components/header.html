@@ -1,0 +1,48 @@
+<header class="fixed top-0 w-full z-50 bg-[#000000]/95 backdrop-blur-sm border-b border-[#1F1F1F]/60">
+  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <a href="{% url 'home' %}" class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+        <span
+          class="bg-[#F59E0B] text-white w-6 h-6 flex items-center justify-center rounded text-xs font-extrabold">S</span>
+        <span class="text-yellow-500">TutorHub</span>Hub
+      </a>
+    </div>
+
+    <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
+      <a href="{% url 'courses_list' %}" class="hover:text-[#FBBF24] transition-colors">Courses</a>
+      <a href="{% url 'tutor_list' %}" class="hover:text-[#FBBF24] transition-colors">Tutors</a>
+      <a href="{% url 'contact_page' %}" class="hover:text-[#FBBF24] transition-colors">Contact</a>
+    </nav>
+
+    <div class="flex items-center gap-4">
+      <div class="relative hidden sm:block">
+        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"></i>
+        <input type="text" placeholder="Search courses..."
+          class="pl-9 pr-4 py-1.5 text-sm bg-[#1A1A1A]/50 border border-transparent focus:bg-[#1A1A1A] focus:border-[#F59E0B] focus:ring-0 rounded-full w-48 transition-all placeholder:text-gray-500 text-white">
+      </div>
+      <button class="relative group p-1">
+        <i data-lucide="shopping-bag" class="w-5 h-5 text-gray-400 group-hover:text-white transition-colors"></i>
+        {% with cart_count=request.session.cart|length %}
+          {% if cart_count %}
+            <span id="cart-count" class="absolute top-0 right-0 w-2 h-2 bg-[#F59E0B] rounded-full border-2 border-[#000000]"></span>
+          {% endif %}
+        {% endwith %}
+      </button>
+       {% if user.is_authenticated %}
+    <div class="relative group">
+        <button class="text-sm font-medium text-white hover:text-[#FBBF24] transition-colors ml-2 flex items-center gap-1">
+            {{ user.username }}
+            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+        </button>
+        <div class="absolute right-0 mt-2 w-48 bg-[#0A0A0A] border border-[#1F1F1F] rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-[#1A1A1A]">Profile</a>
+            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-[#1A1A1A]">Orders</a>
+            <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-[#1A1A1A]">Logout</a>
+        </div>
+    </div>
+{% else %}
+    <a href="{% url 'login' %}" class="text-sm font-medium text-white hover:text-[#FBBF24] transition-colors ml-2">Log in</a>
+{% endif %}
+    </div>
+  </div>
+</header>
