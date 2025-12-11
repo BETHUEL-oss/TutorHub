@@ -1,37 +1,37 @@
 {% extends "base.html" %}
 
-{% block title %}{{ tutor.name }} Profile{% endblock %}
+{% block title %}{{ tutor.school }} Profile{% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-10 text-white">
+<div class="container mx-auto px-4 py-10">
 
-    <div class="bg-[#0A0A0A] rounded-xl shadow-2xl shadow-black/50 p-8 border border-[#1F1F1F]">
-        <h1 class="text-4xl font-extrabold text-yellow-500 mb-4">{{ tutor.tutor_name }}</h1>
+    <div class="bg-gray-800 rounded-xl shadow-2xl shadow-gray-950/50 p-8 border border-gray-700">
+        <h1 class="text-4xl font-extrabold text-gray-100 mb-4">{{ tutor.school }}</h1>
         <p class="text-xl text-gray-400 mb-6">Located in: {{ tutor.location }}</p>
 
         <div class="mb-10">
-            <h2 class="text-2xl font-bold text-yellow-500 border-b border-[#1F1F1F] pb-2 mb-3">About Us</h2>
+            <h2 class="text-2xl font-bold text-gray-100 border-b border-gray-700 pb-2 mb-3">About Us</h2>
             <p class="text-gray-300 leading-relaxed">{{ tutor.bio|linebreaks }}</p>
-            <p class="text-sm text-gray-500 mt-4">Joined TutorHub on {{ tutor.joined_date|date:"F j, Y" }}</p>
+            <p class="text-sm text-gray-500 mt-4">Joined SmartHarvest on {{ tutorpr.joined_date|date:"F j, Y" }}</p>
         </div>
 
-        <h2 class="text-3xl font-extrabold text-yellow-500 border-b border-[#1F1F1F] pb-3 mb-6">Current courses offered ({{ courses|length }})</h2>
+        <h2 class="text-3xl font-extrabold text-emerald-400 border-b border-gray-700 pb-3 mb-6">Current courses ({{ courses|length }})</h2>
 
-        {% if products %}
+        {% if courses %}
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {% for course in courses %}
 
-            <div class="bg-[#1A1A1A] rounded-xl shadow-md hover:shadow-lg hover:shadow-orange-500/10 transition-shadow duration-300 overflow-hidden border border-[#1F1F1F]">
+            <div class="bg-gray-900 rounded-xl shadow-md hover:shadow-lg hover:shadow-emerald-500/10 transition-shadow duration-300 overflow-hidden border border-gray-700">
 
-                {% with primary_image=courses.get_primary_image %}
-                    <a href="{% url 'courses_detail' slug=course.slug %}">
+                {% with primary_image=course.get_primary_image %}
+                    <a href="{% url 'course_detail' slug=course.slug %}">
 
                         {% if primary_image %}
                             <img src="{{ primary_image.image.url }}"
-                                 alt="{{ courses.name }}"
+                                 alt="{{ course.name }}"
                                  class="w-full h-40 object-cover">
                         {% else %}
-                            <div class="w-full h-40 bg-gray-900 flex items-center justify-center text-gray-500 border-b border-[#1F1F1F]">
+                            <div class="w-full h-40 bg-gray-800 flex items-center justify-center text-gray-500">
                                 No Image
                             </div>
                         {% endif %}
@@ -40,12 +40,12 @@
                 {% endwith %}
 
                 <div class="p-4">
-                    <h3 class="text-lg font-semibold mb-1 truncate text-white">
-                        <a href="{% url 'courses_detail' slug=course.slug %}" class="text-[#FBBF24] hover:text-[#F59E0B] transition-colors">{{ courses.name }}</a>
+                    <h3 class="text-lg font-semibold mb-1 truncate text-gray-100">
+                        <a href="{% url 'course_detail' slug=course.slug %}" class="hover:text-emerald-400 transition-colors">{{ course.name }}</a>
                     </h3>
-                    <p class="text-white font-bold text-xl">Ksh{{ courses.price }} / {{ courses.unit }}</p>
+                    <p class="text-gray-100 font-bold text-xl">Ksh{{ course.price }} / {{ course.unit }}</p>
 
-                    <a href="{% url 'courses_detail' slug=course.slug %}" class="mt-3 inline-block text-sm text-[#FBBF24] hover:text-[#F59E0B] hover:underline transition-colors">
+                    <a href="{% url 'course_detail' slug=course.slug %}" class="mt-3 inline-block text-sm text-emerald-400 hover:text-emerald-300 hover:underline transition-colors">
                         View Details
                     </a>
                 </div>
@@ -54,7 +54,7 @@
             {% endfor %}
         </div>
         {% else %}
-        <p class="text-gray-400">This tutor is not available to tutor at the moment.</p>
+        <p class="text-gray-400">This Teacher is not available at the moment.</p>
         {% endif %}
 
     </div>

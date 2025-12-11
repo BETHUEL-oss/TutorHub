@@ -9,7 +9,7 @@
     </div>
 
     <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
-      <a href="{% url 'courses_list' %}" class="hover:text-[#FBBF24] transition-colors">Courses</a>
+      <a href="{% url 'course_list' %}" class="hover:text-[#FBBF24] transition-colors">Courses</a>
       <a href="{% url 'tutor_list' %}" class="hover:text-[#FBBF24] transition-colors">Tutors</a>
       <a href="{% url 'contact_page' %}" class="hover:text-[#FBBF24] transition-colors">Contact</a>
     </nav>
@@ -35,7 +35,7 @@
             <i data-lucide="chevron-down" class="w-4 h-4"></i>
         </button>
         <div class="absolute right-0 mt-2 w-48 bg-[#0A0A0A] border border-[#1F1F1F] rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-[#1A1A1A]">Profile</a>
+            <a href="{% url 'teacher_dashboard'%}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-[#1A1A1A]">Profile</a>
             <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-[#1A1A1A]">Orders</a>
             <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-[#1A1A1A]">Logout</a>
         </div>

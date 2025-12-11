@@ -46,9 +46,11 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "tailwind",
     "django_htmx",
+
     'widget_tweaks',
     'crispy_forms',
     "crispy_tailwind",
+
 
 
     "accounts",

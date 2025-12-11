@@ -2,29 +2,29 @@
     <div class="aspect-square bg-gray-900 relative overflow-hidden">
         <img src="{{ product.images.first.image.url|default:'https://via.placeholder.com/400' }}"
              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-        {% if product.organic %}
-            <div class="absolute top-3 right-3 bg-gray-900/90 backdrop-blur px-2 py-1 rounded text-[10px] font-semibold text-emerald-400 uppercase">Organic</div>
+        {% if course.available %}
+            <div class="absolute top-3 right-3 bg-gray-900/90 backdrop-blur px-2 py-1 rounded text-[10px] font-semibold text-emerald-400 uppercase">Available</div>
         {% endif %}
     </div>
     <div class="p-4 flex flex-col flex-1">
         <div class="flex items-start justify-between mb-2">
             <div>
                 <h3 class="text-sm font-medium text-gray-100 group-hover:text-emerald-400">
-                    <a href="{% url 'product_detail' product.slug %}">{{ product.name }}</a>
+                    <a href="{% url 'course_detail' course.slug %}">{{ course.name }}</a>
                 </h3>
-                {% with vendor_profile=product.farmer.vendorprofile %}
-                {% if vendor_profile.farm_name %}
-                <a href="{% url 'vendor_detail' pk=vendor_profile.pk %}" class="text-xs text-gray-400 hover:underline">{{ vendor_profile.farm_name }}</a>
+                {% with tutor_profile=courses.tutor.tutorprofile %}
+                {% if tutor_profile.name %}
+                <a href="{% url 'tutor_detail' pk=tutor_profile.pk %}" class="text-xs text-gray-400 hover:underline">{{ tutor_profile.name }}</a>
                 {% else %}
-                <span class="text-xs text-gray-400">Unregistered Farmer</span>
+                <span class="text-xs text-gray-400">Unregistered tutor</span>
                 {% endif %}
                 {% endwith %}
             </div>
-            <span class="text-sm font-semibold text-gray-100">Ksh{{ product.price }}<span class="text-gray-500 text-xs">/{{ product.get_unit_display }}</span></span>
+            <span class="text-sm font-semibold text-gray-100">Ksh{{ course.price }}<span class="text-gray-500 text-xs">/{{ course.get_unit_display }}</span></span>
         </div>
         <div class="mt-auto pt-4 flex items-center justify-between border-t border-gray-700">
             <span class="text-xs text-gray-500 flex items-center gap-1">
-                <i data-lucide="map-pin" class="w-3 h-3"></i> {{ product.farmer.vendorprofile.location }}
+                <i data-lucide="map-pin" class="w-3 h-3"></i> {{ course.tutor.tutorprofile.location }}
             </span>
             <button hx-post="{% url 'add_to_cart' product.id %}" hx-target="#cart-count" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-700 hover:bg-emerald-600 hover:text-white transition-all">
                 <i data-lucide="plus" class="w-4 h-4"></i>

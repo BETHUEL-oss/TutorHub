@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content%}
+<div class="container mx-auto px-4 py-10">
+
+    <div class="bg-gray-800 rounded-xl shadow-2xl shadow-gray-950/50 p-6 md:p-10 lg:p-12 border border-gray-700">
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+
+            <div class="lg:sticky lg:top-10">
+                {% with primary_image=course.get_primary_images %}
+                    <img src="{% if primary_image %}{{ primary_image.image.url }}{% else %}{{ course.image.url }}{% endif %}"
+                         alt="{{ course.name }}"
+                         class="w-full h-auto rounded-lg shadow-xl object-cover" />
+                {% endwith %}
+
+                <div class="mt-4 flex space-x-3 overflow-x-auto">
+                    {% for img in course.images.all %}
+                    <img src="{{ img.image.url }}" alt="Gallery Image" class="w-20 h-20 object-cover rounded-md cursor-pointer border border-gray-700 hover:border-emerald-500 transition-colors">
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div>
+                <h1 class="text-5xl font-extrabold text-gray-100 mb-3">{{ course.name }}</h1>
+
+                <p class="text-xl font-semibold text-gray-400 mb-4">
+                    Sold by:
+                    <a href="#" class="text-emerald-400 hover:text-emerald-300 transition-colors">{{ course.teacher.school }}</a>
+                </p>
+
+                <div class="flex items-baseline mb-6 border-b border-gray-700 pb-4">
+                    <span class="text-5xl font-extrabold text-gray-100">Ksh{{ course.price|floatformat:2 }}</span>
+                    <span class="text-xl text-gray-400 ml-2">per {{ course.unit }}</span>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold text-gray-100 mb-3">Description</h3>
+                    <p class="text-gray-300 leading-relaxed">{{ course.description|linebreaks }}</p>
+                </div>
+
+                <div class="mb-8 p-4 bg-yellow-950 rounded-lg border border-yellow-800">
+                    <p class="text-lg font-medium text-gray-200">
+                        In Stock: <strong class="text-yellow-400">{{ course.stock_quantity }} {{ course.unit }}</strong>
+                    </p>
+                    {% if course.stock_quantity <= 5 %}
+                    <p class="text-sm text-red-400 mt-1">Warning: Low stock remaining!</p>
+                    {% endif %}
+                </div>
+
+                <form>
+                <div class="flex items-center space-x-4">
+                    <input type="number" value="1" min="1" max="{{ course.stock_quantity }}" class="w-24 border border-gray-600 rounded-lg p-3 text-lg bg-gray-900 text-gray-100 focus:ring-emerald-500 focus:border-emerald-500" id="quantity-input" name="quantity">
+
+                    <button
+                        hx-post="{% url 'add_to_cart' course_id=course.id %}"
+                        hx-target="#cart-count"
+                        hx-swap="innerHTML"
+                        hx-trigger="click"
+                        {% if not course.available %}disabled{% endif %}
+                        class="flex-1 bg-emerald-600 text-white px-6 py-3 rounded-xl text-xl font-bold hover:bg-emerald-700 transition duration-200 shadow-lg shadow-emerald-500/50 disabled:bg-gray-600 disabled:shadow-none">
+
+                        {% if course.stock_quantity < 1 %}
+                            Out of Stock
+                        {% else %}
+                            Add to Cart
+                        {% endif %}
+                    </button>
+                </div></form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

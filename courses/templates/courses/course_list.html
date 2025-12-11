@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container mx-auto px-4 py-12">
+    <h1 class="text-4xl sm:text-5xl font-bold text-gray-100 tracking-tight mb-10 text-center sm:text-left">
+        Available Courses
+    </h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7">
+
+        {% for course in courses %}
+        <div class="group bg-gray-800/90 backdrop-blur-sm rounded-2xl overflow-hidden
+                    border border-gray-700/50 shadow-xl hover:shadow-2xl
+                    hover:border-emerald-500/40 transition-all duration-400">
+
+            <!-- course Image -->
+            <a href="{% url 'course_detail' slug=course.slug %}" class="block overflow-hidden">
+                {% with primary_image=course.get_primary_image %}
+                {% if primary_image %}
+                    <img src="{{ primary_image.image.url }}"
+                         alt="{{ course.name }}"
+                         class="w-full h-56 object-cover transition-transform duration-700 group-hover:scale-110">
+                {% else %}
+                    <div class="w-full h-56 bg-gray-900/70 flex items-center justify-center">
+                        <span class="text-gray-500 text-lg font-medium">No Image</span>
+                    </div>
+                {% endif %}
+                {% endwith %}
+            </a>
+
+            <!-- course Info -->
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-gray-100 mb-2 line-clamp-2 leading-tight">
+                    <a href="{% url 'course_detail' slug=course.slug %}"
+                       class="hover:text-emerald-400 transition-colors duration-200">
+                        {{ course.name }}
+                    </a>
+                </h2>
+
+                <p class="text-sm text-gray-400 mb-4">
+                    In Stock: <span class="text-emerald-400 font-semibold">{{ course.stock_quantity }} {{ course.unit }}</span>
+                </p>
+
+                <!-- Price + Action Buttons -->
+                <div class="mt-6 flex flex-col gap-4">
+                    <div class="text-3xl font-extrabold text-gray-100">
+                        Ksh{{ course.price|floatformat:2 }}
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-3">
+
+                        <!-- Buy Now – Clean, no glow, still premium -->
+                        <a href="{% url 'mpesa_pay' %}"
+                           class="order-1 sm:order-2 inline-flex items-center justify-center
+                                  px-7 py-3.5 text-lg font-bold text-white
+                                  bg-gradient-to-r from-emerald-500 to-teal-600
+                                  hover:from-emerald-600 hover:to-teal-700
+                                  rounded-xl shadow-md
+                                  transform hover:scale-105
+                                  transition-all duration-300">
+                            Buy Now
+                            <svg class="w-5 h-5 ml-2 -translate-x-1 group-hover:translate-x-0 transition-transform"
+                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                            </svg>
+                        </a>
+
+                        <!-- Add to Cart -->
+                        <button
+                            hx-post="{% url 'add_to_cart' course_id=course.id %}"
+                            hx-target="#cart-count"
+                            hx-swap="innerHTML"
+                            hx-trigger="click"
+                            class="order-2 sm:order-1
+                                   bg-gray-700/80 hover:bg-gray-600
+                                   text-white font-medium px-6 py-3.5
+                                   rounded-xl shadow-md
+                                   border border-gray-600 hover:border-emerald-500/50
+                                   transition-all duration-300">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% empty %}
+        <div class="col-span-full text-center py-20">
+            <p class="text-2xl text-gray-500 font-medium">No products available at the moment.</p>
+            <p class="text-gray-400 mt-2">Check back soon for fresh produce!</p>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock content %}

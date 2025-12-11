@@ -1,16 +1,17 @@
+
 # registration/forms.py
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-# from .models import VendorProfile, ConsumerProfile # Assuming these are defined elsewhere
+from .models import TutorProfile, PupilProfile # Assuming these are defined elsewhere
 
 # Define the common attributes dictionary for consistent styling (Bootstrap's form-control)
 FORM_CONTROL_ATTRS = {'class': 'form-control'}
 
 
-# --- Student Registration Form ---
+# --- student Registration Form ---
 
 class StudentRegistrationForm(UserCreationForm):
     # Style Custom Fields explicitly
@@ -22,8 +23,8 @@ class StudentRegistrationForm(UserCreationForm):
         widget=forms.TextInput(attrs=FORM_CONTROL_ATTRS)
     )
 
-    def _init_(self, *args, **kwargs):
-        super()._init_(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         # Style Inherited Fields (username, passwords)
         inherited_fields = ['username', 'password', 'password2']
@@ -37,14 +38,17 @@ class StudentRegistrationForm(UserCreationForm):
         fields = ["username", "email", "location"]
 
 
-# --- Tutor Registration Form ---
 
-class TutorRegistrationForm(UserCreationForm):
+
+class TeacherRegistrationForm(UserCreationForm):
     # Style Custom Fields explicitly
     email = forms.EmailField(
         widget=forms.EmailInput(attrs=FORM_CONTROL_ATTRS)
     )
-
+    school = forms.CharField(
+        max_length=200,
+        widget=forms.TextInput(attrs=FORM_CONTROL_ATTRS)
+    )
     location = forms.CharField(
         max_length=200,
         widget=forms.TextInput(attrs=FORM_CONTROL_ATTRS)
@@ -60,8 +64,8 @@ class TutorRegistrationForm(UserCreationForm):
         widget=forms.Textarea(attrs={**FORM_CONTROL_ATTRS, 'rows': 4})
     )
 
-    def _init_(self, *args, **kwargs):
-        super()._init_(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         # Style Inherited Fields (username, passwords)
         inherited_fields = ['username', 'password', 'password2']
@@ -75,6 +79,7 @@ class TutorRegistrationForm(UserCreationForm):
         fields = [
             "username",
             "email",
+            "school",
             "location",
             "certification",
             "bio"

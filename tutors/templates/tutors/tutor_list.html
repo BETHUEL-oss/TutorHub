@@ -1,28 +1,26 @@
 {% extends "base.html" %}
 
-{% block title %}Tutor's List{% endblock %}
+{% block title %}Teacher Directory{% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-8 text-white">
-    <h1 class="text-4xl font-extrabold text-yellow-500 mb-8">Meet Our Tutors</h1>
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-extrabold text-emerald-400 mb-8">Meet Our Teachers</h1>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {% for courses in courses %}
-        <div class="bg-[#0A0A0A] rounded-xl shadow-lg shadow-black/50 p-6 hover:shadow-xl hover:shadow-orange-500/10 transition-shadow duration-300 border border-[#1F1F1F]">
-            <h2 class="text-2xl font-bold text-white mb-2">
-                <a href="{% url 'tutor_list' pk=tutor.pk %}" class="text-[#FBBF24] hover:text-[#F59E0B] transition-colors">
-                    {{ tutor.name }}
-                </a>
+        {% for tutor in tutors %}
+        <div class="bg-gray-800 rounded-xl shadow-lg shadow-gray-950/50 p-6 hover:shadow-xl hover:shadow-emerald-500/10 transition-shadow duration-300 border border-gray-700">
+            <h2 class="text-2xl font-bold text-gray-100 mb-2">
+                <a href="{% url 'tutor_detail' pk=tutor.pk %}" class="hover:text-emerald-400 transition-colors">{{ tutor.school }}</a>
             </h2>
             <p class="text-gray-400 mb-4">{{ tutor.location }}</p>
             <p class="text-sm text-gray-500 mb-4 line-clamp-3">{{ tutor.bio|truncatechars:100 }}</p>
 
-            <a href="{% url 'tutor_detail' pk=vendor.pk %}" class="text-[#FBBF24] font-semibold hover:text-[#F59E0B] hover:underline transition-colors">
-                View Profile & Courses &rarr;
+            <a href="{% url 'tutor_detail' pk=tutor.pk %}" class="text-emerald-400 font-semibold hover:text-emerald-300 hover:underline transition-colors">
+                View Profile & courses &rarr;
             </a>
         </div>
         {% empty %}
-        <p class="text-gray-400 col-span-3">No Registered Tutors yet.</p>
+        <p class="text-gray-400 col-span-3">No Teachers are registered yet.</p>
         {% endfor %}
     </div>
 </div>

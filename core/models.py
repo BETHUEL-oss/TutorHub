@@ -15,17 +15,17 @@ class SiteSetting(models.Model):
             raise Exception("Only one SiteSetting instance can be created.")
         return super(SiteSetting, self).save(*args, **kwargs)
 
-    def _str_(self):
+    def __str__(self):
         return 'Global Site Settings'
 
 class ContactInfo(models.Model):
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=11, blank=True)
-    support_hours = models.CharField(max_length=50, blank=True, default='Monday-Sunday: 6:00AM - 6:00PM')
+    support_hours = models.CharField(max_length=50, blank=True, default='Monday-Friday: 9:00AM - 4:00PM')
 
     class Meta:
         verbose_name = "Contact Information"
         verbose_name_plural = "Contact Information"
 
-    def _str_(self):
+    def __str__(self):
         return f"Contact Info: {self.email}"

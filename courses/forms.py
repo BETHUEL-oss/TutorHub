@@ -1,13 +1,13 @@
 from django import forms
-from .models import Courses, CoursesImage
+from .models import Course, CourseImage
 from django.utils.text import slugify
 
-class CoursesForm(forms.ModelForm):
+class CourseForm(forms.ModelForm):
     class Meta:
-        model = Courses
+        model = Course
         fields = [
-            "level", "name", "description", "price", "subjects",
-             "available",
+            "subject", "name", "description", "price", "unit",
+            "stock_quantity", "available", "in_stock",
         ]
 
     def save(self, commit=True):
@@ -22,7 +22,7 @@ class CoursesForm(forms.ModelForm):
         return instance
 
 
-class CoursesImageForm(forms.ModelForm):
+class CourseImageForm(forms.ModelForm):
     class Meta:
-        model = CoursesImage
+        model = CourseImage
         fields = ["image", "caption", "is_primary"]
